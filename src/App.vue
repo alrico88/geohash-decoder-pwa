@@ -1,32 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view class="safe" />
+    <van-tabbar route>
+      <van-tabbar-item
+        replace
+        to="/"
+        icon="location-o"
+      >
+        Decode
+      </van-tabbar-item>
+      <van-tabbar-item
+        replace
+        to="/encode"
+        icon="aim"
+      >
+        Encode
+      </van-tabbar-item>
+      <van-tabbar-item
+        replace
+        to="/position"
+        icon="location-o"
+      >
+        My location
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  background-color: #f7f8fa;
 }
 
-#nav {
-  padding: 30px;
+.safe {
+  padding-bottom: 70px;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.block-title {
+  margin: 0;
+  padding: 16px 16px 16px;
+  color: rgba(69, 90, 100, 0.6);
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
 }
 </style>
