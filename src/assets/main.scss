@@ -1,0 +1,47 @@
+$borderGrey: #c8c7cb;
+
+body {
+  background-color: #f7f8fa;
+  font-size: 16px;
+}
+
+.safe {
+  padding-bottom: 70px;
+}
+
+.block-title {
+  margin: 0;
+  padding: 16px 16px 16px;
+  color: rgba(69, 90, 100, 0.6);
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.van-cell:first-child {
+  border-top: 0.6px solid $borderGrey;
+}
+
+.van-cell:last-child {
+ border-bottom: 0.6px solid $borderGrey; 
+}
+
+.van-cell::after {
+  border-color: $borderGrey;
+}
+
+.van-button {
+  border-color: $borderGrey;
+}
+
+.block-title {
+  color: #898a8d;
+}
+
+.van-tabbar {
+  border-top: 1px solid $borderGrey;
+}
+
+.map-height {
+  height: calc(50vh - 50px);
+}

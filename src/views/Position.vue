@@ -1,33 +1,56 @@
 <template lang="pug">
-  van-row
-    l-map(style="height: 180px; width: 100%", :zoom="zoom", :bounds="bounds", :options="options", ref="map")
-      l-tile-layer(:url="url")
-      l-geo-json(v-if="geohashToDraw", :geojson="geohashToDraw")
-      l-marker(v-if="myCoords.latitude", :lat-lng="[myCoords.latitude, myCoords.longitude]")
-    .block-title Geohash to display
-    van-dropdown-menu
-      van-dropdown-item(v-model="precision" :options="precisions")
-    .block-title Your position encoded as geohashes
-    van-loading.pl(v-if="location.loading && location.available") Getting coordinates
-    van-empty(v-if="!location.available", image="error" description="Geolocation not supported")
-    van-cell-group(v-if="geohashes.length > 0")
-      van-cell(v-for="item of geohashes", :key="item.precision", :title="'Precision ' + item.precision", :label="sizes[item.precision]" :value="item.geohash", v-clipboard:copy="item.geohash", v-clipboard:success="notifyClipSuccess", v-clipboard:error="notifyClipError")
+van-row
+  l-map(
+    style="height: calc(50vh - 50px); width: 100%",
+    :zoom="zoom",
+    :bounds="bounds",
+    :options="options",
+    ref="map"
+  )
+    map-tile
+    l-geo-json(v-if="geohashToDraw", :geojson="geohashToDraw")
+    l-marker(
+      v-if="myCoords.latitude",
+      :lat-lng="[myCoords.latitude, myCoords.longitude]"
+    )
+  .block-title Geohash to display
+  van-dropdown-menu
+    van-dropdown-item(v-model="precision", :options="precisions")
+  .block-title Your position encoded as geohashes
+  van-loading.pl(v-if="location.loading && location.available") Getting coordinates
+  van-empty(
+    v-if="!location.available",
+    image="error",
+    description="Geolocation not supported"
+  )
+  van-cell-group(v-if="geohashes.length > 0")
+    van-cell(
+      v-for="item of geohashes",
+      :key="item.precision",
+      :title="'Precision ' + item.precision",
+      :label="sizes[item.precision]",
+      :value="item.geohash",
+      v-clipboard:copy="item.geohash",
+      v-clipboard:success="notifyClipSuccess",
+      v-clipboard:error="notifyClipError"
+    )
 </template>
 
 <script>
-import {LMap, LMarker, LGeoJson, LTileLayer} from 'vue2-leaflet';
+import {LMap, LMarker, LGeoJson} from 'vue2-leaflet';
 import {encode} from 'ngeohash';
-import {getBoundsFromHash} from '../helpers/geohash';
+import {getBoundsFromHash} from '@/helpers/geohash';
 import bboxPolygon from '@turf/bbox-polygon';
 import sizes from '../helpers/sizes';
 import copy from '../mixins/copy';
+import MapTile from '@/components/MapTile';
 
 export default {
   components: {
     LMap,
     LMarker,
     LGeoJson,
-    LTileLayer,
+    MapTile,
   },
   mixins: [copy],
   data() {
@@ -48,11 +71,11 @@ export default {
       url:
         'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
       options: {
-        zoomControl: false,
+        zoomControl: true,
       },
       sizes,
       precision: 8,
-      precisions: (function() {
+      precisions: (function () {
         const options = [];
         for (let i = 1; i <= 12; i++) {
           options.push({
@@ -118,7 +141,7 @@ export default {
         (err) => {
           console.error(err);
           this.location.available = false;
-        },
+        }
       );
     } else {
       this.location.available = false;

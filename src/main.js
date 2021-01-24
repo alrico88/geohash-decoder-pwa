@@ -7,9 +7,12 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import './assets/main.scss';
 
 // eslint-disable-next-line no-duplicate-imports
 import {Icon} from 'leaflet';
+
+import store from './store';
 
 // eslint-disable-next-line prefer-reflect
 delete Icon.Default.prototype._getIconUrl;
@@ -26,6 +29,7 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount('#app');
 

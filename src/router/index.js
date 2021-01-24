@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Decode from '../views/Decode.vue';
-import Encode from '../views/Encode';
-import Position from '../views/Position';
+import Encode from '../views/Encode.vue';
+import Position from '../views/Position.vue';
+import Options from '../views/Options.vue';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/position',
     name: 'Position',
     component: Position,
+  },
+  {
+    path: '/options',
+    name: 'Options',
+    component: Options,
   },
 ];
 

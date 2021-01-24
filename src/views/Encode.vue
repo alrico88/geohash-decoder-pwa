@@ -3,8 +3,9 @@
     van-col(:span="24")
       van-row
         van-col(:span="24")
-          l-map(style="height: 180px; width: 100%", :zoom="zoom", :bounds="bounds", :options="options", ref="map")
-            l-tile-layer(:url="url")
+          l-map(style="height: calc(50vh - 50px); width: 100%", :zoom="zoom", :bounds="bounds", :options="options", ref="map")
+            map-tile
+            l-tile-layer(:url="tileURL")
             l-geo-json(v-for="item of geohashes", :key="item.precision", :geojson="item.polygon", :options-style="optionsStyle")
             l-marker(v-if="coordinate.latitude", :lat-lng="[coordinate.latitude, coordinate.longitude]")
       van-row
@@ -19,17 +20,19 @@
 </template>
 
 <script>
-import {LMap, LTileLayer, LGeoJson, LMarker} from 'vue2-leaflet';
+import {LMap, LGeoJson, LMarker} from 'vue2-leaflet';
 import {encode} from 'ngeohash';
 import bboxPolygon from '@turf/bbox-polygon';
 import {Toast} from 'vant';
 import sizes from '../helpers/sizes';
-import {getBoundsFromHash} from '../helpers/geohash';
+import {getBoundsFromHash} from '@/helpers/geohash';
+import {mapGetters} from 'vuex';
+import MapTile from '@/components/MapTile';
 
 export default {
   components: {
     LMap,
-    LTileLayer,
+    MapTile,
     LGeoJson,
     LMarker,
   },
@@ -41,10 +44,8 @@ export default {
         [45, 45],
       ],
       options: {
-        zoomControl: false,
+        zoomControl: true,
       },
-      url:
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
       coordinate: {
         latitude: null,
         longitude: null,
@@ -57,6 +58,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['tileURL']),
     geohashes() {
       if (this.coordinate.latitude === null) {
         return [];
