@@ -1,22 +1,42 @@
 <template lang="pug">
-  van-row
-    van-col(:span="24")
-      van-row
-        van-col(:span="24")
-          l-map(style="height: calc(50vh - 50px); width: 100%", :zoom="zoom", :bounds="bounds", :options="options", ref="map")
-            map-tile
-            l-tile-layer(:url="tileURL")
-            l-geo-json(v-for="item of geohashes", :key="item.precision", :geojson="item.polygon", :options-style="optionsStyle")
-            l-marker(v-if="coordinate.latitude", :lat-lng="[coordinate.latitude, coordinate.longitude]")
-      van-row
-        van-col(:span="24")
-          .block-title Encoded geohashes {{ geohashes.length > 0 ? '(Tap to copy and focus)' : '' }}
-      van-row(v-if="geohashes.length === 0")
-        van-col(:span="24")
-          van-cell(icon="warn-o", title="Tap on the map to encode a point")
-      van-row(v-if="geohashes.length > 0")
-        van-col(:span="24")
-          van-cell(v-for="item of geohashes", :key="item.precision", :title="'Precision ' + item.precision", :label="sizes[item.precision]" :value="item.geohash", @click="drawGeohash(item.geohash)")
+van-row
+  van-col(:span="24")
+    van-row
+      van-col(:span="24")
+        l-map(
+          style="height: calc(50vh - 50px); width: 100%",
+          :zoom="zoom",
+          :bounds="bounds",
+          :options="options",
+          ref="map"
+        )
+          map-tile
+          l-geo-json(
+            v-for="item of geohashes",
+            :key="item.precision",
+            :geojson="item.polygon",
+            :options-style="optionsStyle"
+          )
+          l-marker(
+            v-if="coordinate.latitude",
+            :lat-lng="[coordinate.latitude, coordinate.longitude]"
+          )
+    van-row
+      van-col(:span="24")
+        .block-title Encoded geohashes {{ geohashes.length > 0 ? '(Tap to copy and focus)' : '' }}
+    van-row(v-if="geohashes.length === 0")
+      van-col(:span="24")
+        van-cell(icon="warn-o", title="Tap on the map to encode a point")
+    van-row(v-if="geohashes.length > 0")
+      van-col(:span="24")
+        van-cell(
+          v-for="item of geohashes",
+          :key="item.precision",
+          :title="'Precision ' + item.precision",
+          :label="sizes[item.precision]",
+          :value="item.geohash",
+          @click="drawGeohash(item.geohash)"
+        )
 </template>
 
 <script>
@@ -102,7 +122,10 @@ export default {
   },
   methods: {
     drawGeohash(geohash) {
-      Toast.success('Copied');
+      this.$copyText(geohash).then(() => {
+        Toast.success('Copied');
+      });
+
       const [minLat, minLon, maxLat, maxLon] = getBoundsFromHash(geohash);
       this.bounds = [
         [minLat, minLon],

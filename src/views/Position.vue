@@ -75,7 +75,7 @@ export default {
       },
       sizes,
       precision: 8,
-      precisions: (function () {
+      precisions: (function() {
         const options = [];
         for (let i = 1; i <= 12; i++) {
           options.push({

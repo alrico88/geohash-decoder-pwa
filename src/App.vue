@@ -11,6 +11,3 @@
     van-tabbar-item(replace="", to="/options", icon="setting-o")
       | Options
 </template>
-
-<style lang="scss">
-</style>
